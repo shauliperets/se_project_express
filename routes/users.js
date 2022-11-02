@@ -2,19 +2,11 @@
 
 console.log("users route");
 
-const router = require("express").Router(); // creating a router
-//const { users } = require('./db.js'); // since this data is necessary for routing, we need to import it
+const router = require("express").Router();
 
-router.get("/users", (request, response) => {
-  console.log("response =>", response);
-  response.send("users-123456-90");
-  response.send("router res");
-  /*if (!users[request.params.id]) {
-    response.send(`Data not found`);
-    return;
-  }
-  const { name, age } = users[request.params.id];
-  response.send(`User ${name}, ${age} years old`);*/
+router.get("/", (request, response) => {
+  //console.log("response =>", response);
+  response.send("users-12345690 users router res");
 });
 
 /*router.get("/users", (req, res) => {
@@ -22,6 +14,4 @@ router.get("/users", (request, response) => {
   res.send("users-123456");
 });*/
 
-console.log("users route ends");
-
-module.exports = router; // exporting the router
+module.exports = router;
