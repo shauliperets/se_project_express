@@ -7,18 +7,16 @@ const fsPromises = require("fs").promises;
 
 const CARDS_PATH = path.join(__dirname, "../data/cards.json");
 
-//console.log("CARD_PATH =>", CARDS_PATH);
-
-router.get("/:id", (request, response) => {
-  //response.send("cards-123456789");
+router.get("/", (request, response) => {
   fsPromises
     .readFile(CARDS_PATH, { encoding: "utf8" })
     .then((cards) => {
-      response.send({ data: JSON.parse(cards) });
+      const jsonCards = JSON.parse(cards);
+      response.send(jsonCards);
     })
-    .catch((error) =>
-      response.send({ message: `An error has occurred (${error})` })
-    );
+    .catch((error) => {
+      response.send({ message: `An error has occurred (${error})` });
+    });
 });
 
 module.exports = router;
