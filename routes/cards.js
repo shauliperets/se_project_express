@@ -1,5 +1,3 @@
-// routes.js
-
 const router = require("express").Router();
 const path = require("path");
 
@@ -15,7 +13,7 @@ router.get("/", (request, response) => {
       response.send(jsonCards);
     })
     .catch((error) => {
-      response.send({ message: `An error has occurred (${error})` });
+      response.send({ message: `An error has occurred - ${error}` });
     });
 });
 

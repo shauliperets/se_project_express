@@ -14,13 +14,16 @@ router.get("/:id", (request, response) => {
 
       for (const key in jsonUsers) {
         if (jsonUsers[key]._id == request.params.id) {
-          response.send(jsonUsers[key]);
+          response.status(200).send(jsonUsers[key]);
           return;
         }
       }
+      response.status(404).send("User not exists");
     })
     .catch((error) => {
-      response.send({ message: `An error has occurred (${error})` });
+      response
+        .status(500)
+        .send({ message: `An error has occurred - ${error}` });
     });
 });
 
