@@ -1,4 +1,5 @@
 const express = require("express");
+const router = require("express").Router();
 
 const cardsRouter = require("./routes/cards");
 const usersRouter = require("./routes/users");
@@ -9,8 +10,8 @@ const app = express();
 
 app.use("/users", usersRouter);
 app.use("/cards", cardsRouter);
-app.use(() => {
-  console.log("Routes not found");
+app.use((request, response) => {
+  response.status(404).send({ message: "Requested resource not found" });
 });
 
 app.listen(PORT, () => {
