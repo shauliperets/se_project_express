@@ -12,25 +12,9 @@ router.get("/:id", (request, response) => {
     .then((users) => {
       const jsonUsers = JSON.parse(users);
 
-      /*for (const key in jsonUsers) {
-        if (jsonUsers[key]._id == request.params.id) {
-          response.status(200).send(jsonUsers[key]);
-          return;
-        }
-      }*/
-
       const user = jsonUsers.find(
         (element) => element._id == request.params.id
       );
-
-      //console.log(`user: ${user._id}`);
-
-      /*jsonUsers.find((element, index, array) => {
-        console.log(
-          `element._id: ${element._id}, index: ${index}, array: ${array}`
-        );
-        element._id === request.params.id;
-      });*/
 
       if (user) {
         response.status(200).send(user);
