@@ -13,7 +13,7 @@ router.get("/:id", (request, response) => {
       const jsonUsers = JSON.parse(users);
 
       const user = jsonUsers.find(
-        (element) => element._id == request.params.id
+        (element) => element._id === request.params.id
       );
 
       if (user) {
@@ -37,7 +37,9 @@ router.get("/", (request, response) => {
       response.send(jsonUsers);
     })
     .catch((error) => {
-      response.send({ message: `An error has occurred (${error})` });
+      response
+        .status(500)
+        .send({ message: `An error has occurred (${error})` });
     });
 });
 

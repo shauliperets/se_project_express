@@ -13,7 +13,9 @@ router.get("/", (request, response) => {
       response.send(jsonCards);
     })
     .catch((error) => {
-      response.send({ message: `An error has occurred - ${error}` });
+      response
+        .status(500)
+        .send({ message: `An error has occurred - ${error}` });
     });
 });
 
