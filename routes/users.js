@@ -1,14 +1,14 @@
 const router = require("express").Router();
 
-const path = require("path");
+//const path = require("path");
 
 //const fsPromises = require("fs").promises;
 
-const { getUsers, getUser, createUser } = require("../controllers/users")
+const { getUsers, getUser, createUser } = require("../controllers/users");
 
-router.get('/', getUsers);
-router.get('/:userId', getUser);
-router.post('/', createUser);
+router.get("/", getUsers);
+router.get("/:userId", getUser);
+router.post("/", createUser);
 
 //const USERS_PATH = path.join(__dirname, "../data/users.json");
 
