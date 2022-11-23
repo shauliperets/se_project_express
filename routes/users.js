@@ -2,10 +2,17 @@ const router = require("express").Router();
 
 const path = require("path");
 
-const fsPromises = require("fs").promises;
+//const fsPromises = require("fs").promises;
 
-const USERS_PATH = path.join(__dirname, "../data/users.json");
+const { getUsers, getUser, createUser } = require("../controllers/users")
 
+router.get('/', getUsers);
+router.get('/:userId', getUser);
+router.post('/', createUser);
+
+//const USERS_PATH = path.join(__dirname, "../data/users.json");
+
+/*
 router.get("/:id", (request, response) => {
   fsPromises
     .readFile(USERS_PATH, { encoding: "utf8" })
@@ -41,6 +48,6 @@ router.get("/", (request, response) => {
         .status(500)
         .send({ message: `An error has occurred (${error})` });
     });
-});
+});*/
 
 module.exports = router;
