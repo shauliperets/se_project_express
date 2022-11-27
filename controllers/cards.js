@@ -5,7 +5,7 @@ module.exports.getCards = (request, response) => {
     .orFail()
     .then((cards) => response.send({ data: cards }))
     .catch((error) => {
-      if (error == DocumentNotFoundError) {
+      if (error.name === "DocumentNotFoundError") {
         response.status(404).send({ message: "Data not found" });
         console.log(error);
       } else {
@@ -23,11 +23,11 @@ module.exports.createCard = (request, response) => {
     .then((card) => response.send({ data: card }))
     .catch((error) => {
       if (
-        error.message ==
+        error.message ===
           "card validation failed: name: Path `name` is required., link: Path `link` is required." ||
-        error.message ==
+        error.message ===
           "card validation failed: name: Path `name` is required." ||
-        error.message ==
+        error.message ===
           "card validation failed: name: Path `link` is required."
       ) {
         response.status(400).send({ message: error.message });
@@ -38,7 +38,7 @@ module.exports.createCard = (request, response) => {
 };
 
 module.exports.deleteCard = (request, response) => {
-  const cardId = request.cardId;
+  const cardId = { request };
 
   Card.create({ _id: cardId })
     .then((card) => response.send({ data: card }))

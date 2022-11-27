@@ -12,3 +12,4 @@ ESLint
 ## Running the Project
 
 `npm run dev` — to launch the server with the hot reload feature
+`npm run start` — to launch the server without the reload

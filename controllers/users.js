@@ -5,7 +5,7 @@ module.exports.getUsers = (request, response) => {
     .orFail()
     .then((users) => response.send({ data: users }))
     .catch((error) => {
-      if (error == DocumentNotFoundError) {
+      if (error.name === "DocumentNotFoundError") {
         response.status(404).send({ message: "Data not found" });
         console.log(error);
       } else {
@@ -18,7 +18,7 @@ module.exports.getUser = (request, response) => {
   User.findById(request.params.userId)
     .then((user) => response.send({ data: user }))
     .catch((error) => {
-      if (error == DocumentNotFoundError) {
+      if (error.name === "DocumentNotFoundError") {
         response.status(404).send({ message: "User not found" });
         console.log(error);
       } else {
@@ -38,7 +38,7 @@ module.exports.createUser = (request, response) => {
 module.exports.updateProfile = (request, response) => {
   const { name, about } = request.body;
 
-  User.findByIdAndUpdate(request.user._id, { name: name, about: about })
+  User.findByIdAndUpdate(request.user._id, { name, about })
     .then((user) => response.send({ data: user }))
     .catch((error) => response.status(500).send({ message: error.message }));
 };
@@ -46,7 +46,7 @@ module.exports.updateProfile = (request, response) => {
 module.exports.updateAvatar = (request, response) => {
   const { avatar } = request.body;
 
-  User.findByIdAndUpdate(request.user._id, { avatar: avatar })
+  User.findByIdAndUpdate(request.user._id, { avatar })
     .then((user) => response.send({ data: user }))
     .catch((error) => response.status(500).send({ message: error.message }));
 };
