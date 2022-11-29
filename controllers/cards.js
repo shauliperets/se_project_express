@@ -1,17 +1,13 @@
+const constants = require("../constants/index");
+
 const Card = require("../models/card");
 
 module.exports.getCards = (request, response) => {
   Card.find({})
-    .orFail()
-    .then((cards) => response.send({ data: cards }))
+    .then((cards) => response.status(200).send({ data: cards }))
     .catch((error) => {
-      if (error.name === "DocumentNotFoundError") {
-        response.status(404).send({ message: "Data not found" });
-        console.log(error);
-      } else {
-        response.status(500).send({ message: error.message });
-        console.log(error);
-      }
+      response.status(500).send({ message: constants.responses.e500 });
+      console.log(error);
     });
 };
 
@@ -20,29 +16,34 @@ module.exports.createCard = (request, response) => {
   const userId = request.user._id;
 
   Card.create({ name, link, owner: userId })
+    .orFail()
     .then((card) => response.send({ data: card }))
     .catch((error) => {
-      if (
-        error.message ===
-          "card validation failed: name: Path `name` is required., link: Path `link` is required." ||
-        error.message ===
-          "card validation failed: name: Path `name` is required." ||
-        error.message ===
-          "card validation failed: name: Path `link` is required."
-      ) {
-        response.status(400).send({ message: error.message });
+      if (error.name === "ValidationError") {
+        response.status(400).send({ message: constants.responses.e400 });
       } else {
-        response.status(500).send({ message: error.message });
+        response.status(500).send({ message: constants.responses.e500 });
       }
     });
 };
 
 module.exports.deleteCard = (request, response) => {
-  const cardId = { request };
+  const { cardId } = request.params;
 
-  Card.create({ _id: cardId })
+  console.log("delete card. cardId => ", cardId);
+
+  Card.findByIdAndRemove({ _id: cardId })
+    .orFail()
     .then((card) => response.send({ data: card }))
-    .catch((error) => response.status(500).send({ message: error.message }));
+    .catch((error) => {
+      if (error.name === "CastError") {
+        response.status(400).send({ message: constants.responses.e400ID });
+      } else if (error.name === "DocumentNotFoundError") {
+        response.status(404).send({ message: constants.responses.e404 });
+      } else {
+        response.status(500).send({ message: constants.responses.e500 });
+      }
+    });
 };
 
 module.exports.likeCard = (request, response) => {
@@ -51,8 +52,17 @@ module.exports.likeCard = (request, response) => {
     { $addToSet: { likes: request.user._id } }, // add _id to the array if it's not there yet
     { new: true }
   )
+    .orFail()
     .then((card) => response.send({ data: card }))
-    .catch((error) => response.status(500).send({ message: error.message }));
+    .catch((error) => {
+      if (error.name === "CastError") {
+        response.status(400).send({ message: constants.responses.e400ID });
+      } else if (error.name === "DocumentNotFoundError") {
+        response.status(404).send({ message: constants.responses.e404 });
+      } else {
+        response.status(500).send({ message: constants.responses.e500 });
+      }
+    });
 };
 
 module.exports.dislikeCard = (request, response) => {
@@ -61,6 +71,15 @@ module.exports.dislikeCard = (request, response) => {
     { $pull: { likes: request.user._id } }, // remove _id from the array
     { new: true }
   )
+    .orFail()
     .then((card) => response.send({ data: card }))
-    .catch((error) => response.status(500).send({ message: error.message }));
+    .catch((error) => {
+      if (error.name === "CastError") {
+        response.status(400).send({ message: constants.responses.e400ID });
+      } else if (error.name === "DocumentNotFoundError") {
+        response.status(404).send({ message: constants.responses.e404 });
+      } else {
+        response.status(500).send({ message: constants.responses.e500 });
+      }
+    });
 };

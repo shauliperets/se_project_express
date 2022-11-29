@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        return /(http|https):\/\/[\da-z.-]+\.(com|co.il)[\/a-z]*/.test(v); // eslint-disable-line
+        return /(http|https):\/\/[\da-z.-]+\.[\/a-z]*/.test(v); // eslint-disable-line
       },
       message: (props) => `${props.value} is not a valid link!`,
     },

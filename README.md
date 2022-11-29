@@ -4,12 +4,23 @@ The back-end project is focused on creating a server for the WTWR application. Y
 
 ## Technologies and techniques
 
-NodeJs
-Express
-EditorConfig for VS Code
-ESLint
+- NodeJs
+- Express
+- EditorConfig for VS Code
+- ESLint
+- MogoDb
 
 ## Running the Project
 
 `npm run dev` — to launch the server with the hot reload feature
 `npm run start` — to launch the server without the reload
+
+## Directories
+
+`/models` (Db schemas)
+
+`/routes` (Request routing)
+
+`/controllers` (Request handling)
+
+`/constants` Error messages
