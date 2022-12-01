@@ -5,7 +5,9 @@ module.exports.getUsers = (request, response) => {
   User.find({})
     .then((users) => response.send({ data: users }))
     .catch((error) => {
-      response.status(500).send({ message: constants.responses.e500 });
+      response
+        .status(constants.errorStatus.e500)
+        .send({ message: constants.errorMessage.e500 });
     });
 };
 
@@ -28,14 +30,17 @@ module.exports.createUser = (request, response) => {
   const { name, about, avatar } = request.body;
 
   User.create({ name, about, avatar })
-    .orFail()
     .then((user) => response.send({ data: user }))
     .catch((error) => {
       if (error.name === "ValidationError") {
-        response.status(400).send({ message: constants.responses.e400 });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400 });
         console.log(error);
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
@@ -55,10 +60,16 @@ module.exports.updateProfile = (request, response) => {
     .then((user) => response.send({ data: user }))
     .catch((error) => {
       if (error.name === "ValidationError") {
-        response.status(400).send({ message: constants.responses.e400 });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.responses.e400 });
         console.log(error);
+      } else if (error.name === "DocumentNotFoundError") {
+        response.status(404).send({ message: constants.responses.e404 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
@@ -78,10 +89,16 @@ module.exports.updateAvatar = (request, response) => {
     .then((user) => response.send({ data: user }))
     .catch((error) => {
       if (error.name === "ValidationError") {
-        response.status(400).send({ message: constants.responses.e400 });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400 });
         console.log(error);
+      } else if (error.name === "DocumentNotFoundError") {
+        response.status(404).send({ message: constants.responses.e404 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };

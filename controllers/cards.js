@@ -4,9 +4,11 @@ const Card = require("../models/card");
 
 module.exports.getCards = (request, response) => {
   Card.find({})
-    .then((cards) => response.status(200).send({ data: cards }))
+    .then((cards) => response.send({ data: cards }))
     .catch((error) => {
-      response.status(500).send({ message: constants.responses.e500 });
+      response
+        .status(constants.errorStatus.e500)
+        .send({ message: constants.errorMessage.e500 });
       console.log(error);
     });
 };
@@ -16,13 +18,16 @@ module.exports.createCard = (request, response) => {
   const userId = request.user._id;
 
   Card.create({ name, link, owner: userId })
-    .orFail()
     .then((card) => response.send({ data: card }))
     .catch((error) => {
       if (error.name === "ValidationError") {
-        response.status(400).send({ message: constants.responses.e400 });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
@@ -37,11 +42,17 @@ module.exports.deleteCard = (request, response) => {
     .then((card) => response.send({ data: card }))
     .catch((error) => {
       if (error.name === "CastError") {
-        response.status(400).send({ message: constants.responses.e400ID });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400ID });
       } else if (error.name === "DocumentNotFoundError") {
-        response.status(404).send({ message: constants.responses.e404 });
+        response
+          .status(constants.errorStatus.e404)
+          .send({ message: constants.errorMessage.e404 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
@@ -56,11 +67,17 @@ module.exports.likeCard = (request, response) => {
     .then((card) => response.send({ data: card }))
     .catch((error) => {
       if (error.name === "CastError") {
-        response.status(400).send({ message: constants.responses.e400ID });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400ID });
       } else if (error.name === "DocumentNotFoundError") {
-        response.status(404).send({ message: constants.responses.e404 });
+        response
+          .status(constants.errorStatus.e404)
+          .send({ message: constants.errorMessage.e404 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
@@ -75,11 +92,17 @@ module.exports.dislikeCard = (request, response) => {
     .then((card) => response.send({ data: card }))
     .catch((error) => {
       if (error.name === "CastError") {
-        response.status(400).send({ message: constants.responses.e400ID });
+        response
+          .status(constants.errorStatus.e400)
+          .send({ message: constants.errorMessage.e400ID });
       } else if (error.name === "DocumentNotFoundError") {
-        response.status(404).send({ message: constants.responses.e404 });
+        response
+          .status(constants.errorStatus.e404)
+          .send({ message: constants.errorMessage.e404 });
       } else {
-        response.status(500).send({ message: constants.responses.e500 });
+        response
+          .status(constants.errorStatus.e500)
+          .send({ message: constants.errorMessage.e500 });
       }
     });
 };
